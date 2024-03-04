@@ -7,6 +7,6 @@ POST {{api}}
 Content-Type: application/json
     
     {
-        "nombre": "Guillermo del Toro",
+        "nombre": "Barbanegra",
         "salario": "200000"
     }
