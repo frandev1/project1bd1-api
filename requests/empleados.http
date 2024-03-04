@@ -1,0 +1,12 @@
+@api = http://localhost:3000/api/empleados
+
+GET {{api}}
+
+###
+POST {{api}}
+Content-Type: application/json
+    
+    {
+        "nombre": "Guillermo del Toro",
+        "salario": "200000"
+    }
