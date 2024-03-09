@@ -1,14 +1,13 @@
-import { getConnection } from "../database/connection";
-import sql from 'mssql';
+import { ListarEmpleadosRepo } from '../repo/repo';
 
 export const getEmpleados = async (req, res) => {
-    const pool = await getConnection();
-    const result = await pool.request()
-    .output('OutResultCode', sql.Int)
-    .execute('dbo.ListarEmpleados');
-    console.log(result.recordset);
-    res.json(result.recordset);
-    return result.recordset;
+    try {
+        const empleados = await ListarEmpleadosRepo();
+        res.status(200).json(
+            {empleados});
+    } catch (error) {
+        res.status(500).json({msg: 'Internal Server Error'});
+    }
 }
 
 export const createNewEmpleado = async (req, res) => {
@@ -18,14 +17,13 @@ export const createNewEmpleado = async (req, res) => {
     }
 
     console.log(nombre, salario);
-
-    const pool = await getConnection();
-    const result = await pool.request()
-    .input('inNombre', sql.VarChar, nombre)
-    .input('inSalario', sql.Money, salario)
-    .output('OutResultCode', sql.Int,0)
-    .execute('dbo.InsertarEmpleado');
+    
+    const result = await InsertarEmpleadoRepo(nombre, salario);
+    if(result === false){
+        return res.status(500).json({msg: 'Internal Server Error'});
+    }
+    res.status(200).json({msg: 'Empleado creado'});
 
     console.log(result.recordset);
-    return res.json(result.recordset);
+    return result.recordset;
 };

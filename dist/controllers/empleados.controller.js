@@ -24,9 +24,8 @@ var getEmpleados = exports.getEmpleados = /*#__PURE__*/function () {
         case 5:
           result = _context.sent;
           console.log(result.recordset);
-          res.json(result.recordset);
-          return _context.abrupt("return", result.recordset);
-        case 9:
+          return _context.abrupt("return", res.json(result.recordset));
+        case 8:
         case "end":
           return _context.stop();
       }
@@ -61,7 +60,7 @@ var createNewEmpleado = exports.createNewEmpleado = /*#__PURE__*/function () {
         case 9:
           result = _context2.sent;
           console.log(result.recordset);
-          return _context2.abrupt("return", res.json(result.recordset));
+          return _context2.abrupt("return", result.recordset);
         case 12:
         case "end":
           return _context2.stop();
