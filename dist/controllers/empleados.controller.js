@@ -48,17 +48,17 @@ var createNewEmpleado = exports.createNewEmpleado = /*#__PURE__*/function () {
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
+          _context2.prev = 0;
           _req$body = req.body, nombre = _req$body.nombre, salario = _req$body.salario;
           if (!(nombre == null || salario == null)) {
-            _context2.next = 3;
+            _context2.next = 4;
             break;
           }
           return _context2.abrupt("return", res.status(400).json({
             msg: 'Bad Request. Please fill all fields'
           }));
-        case 3:
+        case 4:
           console.log(nombre, salario);
-          _context2.prev = 4;
           _context2.next = 7;
           return (0, _connection.getConnection)();
         case 7:
@@ -67,27 +67,31 @@ var createNewEmpleado = exports.createNewEmpleado = /*#__PURE__*/function () {
           return pool.request().input('inNombre', _mssql["default"].VarChar, nombre).input('inSalario', _mssql["default"].Money, salario).output('OutResultCode', _mssql["default"].Int, 0).execute('dbo.InsertarEmpleado');
         case 10:
           result = _context2.sent;
-          if (!(result.output.OutResultCode == 0)) {
-            _context2.next = 15;
-            break;
+          console.log(result.output.OutResultCode);
+          if (result.output.OutResultCode == 0) {
+            res.status(200).json({
+              msg: 'Empleado creado correctamente'
+            });
+          } else {
+            res.status(400).json({
+              msg: 'Error al crear el empleado'
+            });
           }
-          return _context2.abrupt("return", true);
-        case 15:
-          return _context2.abrupt("return", false);
-        case 16:
-          _context2.next = 23;
+          _context2.next = 20;
           break;
-        case 18:
-          _context2.prev = 18;
-          _context2.t0 = _context2["catch"](4);
+        case 15:
+          _context2.prev = 15;
+          _context2.t0 = _context2["catch"](0);
           console.log(_context2.t0);
           console.error('Error al llamar al stored procedure');
-          return _context2.abrupt("return", false);
-        case 23:
+          res.status(500).json({
+            msg: 'Internal Server Error'
+          });
+        case 20:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[4, 18]]);
+    }, _callee2, null, [[0, 15]]);
   }));
   return function createNewEmpleado(_x3, _x4) {
     return _ref2.apply(this, arguments);
