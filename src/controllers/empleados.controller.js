@@ -13,14 +13,15 @@ export const getEmpleados = async (req, res) => {
 }
 
 export const createNewEmpleado = async (req, res) => {
-    const {nombre, salario} = req.body;
-    if(nombre == null || salario == null){
-        return res.status(400).json({msg: 'Bad Request. Please fill all fields'});
-    }
-
-    console.log(nombre, salario);
-    
     try {
+        const {nombre, salario} = req.body;
+        if(nombre == null || salario == null){
+            return res.status(400).json({msg: 'Bad Request. Please fill all fields'});
+        }
+
+        console.log(nombre, salario);
+        
+    
         const pool = await getConnection();
         const result = await pool.request()
         .input('inNombre', sql.VarChar, nombre)
@@ -30,13 +31,13 @@ export const createNewEmpleado = async (req, res) => {
         
         console.log(result.output.OutResultCode);
         if(result.output.OutResultCode == 0){
-            resolve(true);
+            res.status(200).json({msg: 'Empleado creado correctamente'});
         } else {
-            resolve(false);
+            res.status(400).json({msg: 'Error al crear el empleado'});
         }
     } catch (error) {
         console.log(error);
         console.error('Error al llamar al stored procedure');
-        return false;
+        res.status(500).json({msg: 'Internal Server Error'});
     }
 };
